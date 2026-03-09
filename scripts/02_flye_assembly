@@ -1,0 +1,20 @@
+#!/bin/bash
+#SBATCH --job-name=flye_assembly
+#SBATCH -n 1
+#SBATCH -N 1
+#SBATCH -c 16
+#SBATCH --mem=250G
+#SBATCH --partition=general
+#SBATCH --qos=general
+#SBATCH --mail-user=alex.frutos@uconn.edu
+#SBATCH --mail-type=ALL
+#SBATCH -o %x_%A_%a.out
+#SBATCH -e %x_%A_%a.err
+
+module load flye
+
+raw_reads=../data/raw/SRR33320*
+out_dir=../data/assembly
+mkdir -p $out_dir
+
+flye --nano-raw $raw_reads --genome-size 1.5g --threads 16 --out-dir $out_dir
