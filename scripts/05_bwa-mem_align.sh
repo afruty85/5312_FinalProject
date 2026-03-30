@@ -12,6 +12,7 @@
 #SBATCH -e %x_%j.err
 
 module load bwa/0.7.17
+module load samtools
 
 REF=../data/medaka_polish_2/consensus.fasta
 trim_dir=../data/trimmed
@@ -24,6 +25,7 @@ for R1 in $trim_dir/*_1_trimmed.fastq.gz; do
     base=$(basename $R1 _1_trimmed.fastq.gz)
     R2=$trim_dir/${base}_2_trimmed.fastq.gz
 
-    bwa mem $REF $R1 $R2 > $out_dir/${base}.sam
+    bwa mem -t 8 $REF $R1 $R2 | samtools sort -@ 8 -o $out_dir/${base}.sorted.bam
+    samtools index $out_dir/${base}.sorted.bam
 done
 
