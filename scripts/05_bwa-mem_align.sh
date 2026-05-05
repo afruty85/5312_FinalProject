@@ -14,17 +14,21 @@
 module load bwa/0.7.17
 module load samtools
 
+# Input and output files/directories
 REF=../data/medaka_polish_2/consensus.fasta
 trim_dir=../data/trimmed
 out_dir=../data/alignment
 mkdir -p $out_dir
 
+# Index the polished assembly
 bwa index $REF
 
+# Loop through all trimmed reads
 for R1 in $trim_dir/*_1_trimmed.fastq.gz; do
     base=$(basename $R1 _1_trimmed.fastq.gz)
     R2=$trim_dir/${base}_2_trimmed.fastq.gz
 
+    # Align reads, sort BAM, and index output
     bwa mem -t 8 $REF $R1 $R2 | samtools sort -@ 8 -o $out_dir/${base}.sorted.bam
     samtools index $out_dir/${base}.sorted.bam
 done
