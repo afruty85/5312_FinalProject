@@ -15,6 +15,7 @@ module load bwa/0.7.17
 module load minimap2
 module load samtools
 
+# Input and output
 REF=../data/pilon_polish/pilon_polished.fasta
 trim_dir=../data/trimmed
 ONT_reads=../data/raw/ONT_raw/*fastq.gz
@@ -23,8 +24,10 @@ ONT_out_dir=../data/pilon_polish/ONT_alignment
 mkdir -p $out_dir
 mkdir -p $ONT_out_dir
 
+# Index polished genome assembly
 bwa index $REF
 
+# Align trimmed Illumina reads, alignments are indexed
 for R1 in $trim_dir/*_1_trimmed.fastq.gz; do
     base=$(basename $R1 _1_trimmed.fastq.gz)
     R2=$trim_dir/${base}_2_trimmed.fastq.gz
@@ -33,6 +36,7 @@ for R1 in $trim_dir/*_1_trimmed.fastq.gz; do
     samtools index $out_dir/${base}.sorted.bam
 done
 
+# Align ONT reads, alignments are indexed
 for FQ in $ONT_reads; do
     base=$(basename $FQ .fastq.gz)
 
