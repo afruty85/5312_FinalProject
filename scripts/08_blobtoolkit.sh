@@ -14,6 +14,7 @@
 module load samtools
 
 # Merge and index Illumina BAM files
+# samtools index -c = create a CSI index instead of a BAI index (supports very large reference sequences, needed for BTK)
 samtools merge ../data/pilon_polish/ILL_merged.bam ../data/pilon_polish/ILL_alignment/*.bam
 samtools index -c ../data/pilon_polish/ILL_merged.bam
 

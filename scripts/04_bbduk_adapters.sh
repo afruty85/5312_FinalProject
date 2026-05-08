@@ -18,7 +18,7 @@ mkdir -p $out_dir
 
 module load bbmap
 
-# Loop through all forward reads (_1 files)
+# Loop through all reads (_1 files)
 for r1 in $raw_reads/*_1.fastq.gz
 do
   r2=${r1/_1.fastq.gz/_2.fastq.gz}
